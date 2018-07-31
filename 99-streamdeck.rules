@@ -1,0 +1,15 @@
+# Elgato StreamDeck
+#
+# This file should be installed so you can access the Stream Deck without beeing root.
+# To install, execute this in the terminal: sudo cp 99-streamdeck.rules /etc/udev/rules.d
+#
+# To access the StreamDeck the user has to be in the group 'plugdev' (https://wiki.debian.org/SystemGroups).
+# To check in which groups an user is execute: groups USERNAME
+# To add an user to the group execute: sudo usermod -a -G plugdev USERNAME 
+
+# Only the currently-logged-in (physical) user is allowed to access the StreamDeck.
+# Tag "udev-acl" for compatibility reasons.
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0060", TAG+="uaccess", TAG+="udev-acl", GROUP="plugdev"
+
+# Alternative: Every user on the system is allowed to access the StreamDeck
+# SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0060", MODE:="0664", GROUP="plugdev"
