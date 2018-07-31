@@ -1,2 +1,2 @@
-from . import StreamDeck
-from . import StreamDeckMenu
+from .StreamDeck import *
+from .StreamDeckMenu import *
