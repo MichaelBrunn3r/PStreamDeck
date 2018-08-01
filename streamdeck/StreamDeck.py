@@ -87,10 +87,10 @@ class StreamDeck:
     def close(self):
         """ Closes the device for input/output."""
         # Close device
-        self.hid_device.close()
+        if self.hid_device is not None: self.hid_device.close()
         # Stop read thread
         self.listen_thread_running = False
-        self.listen_thread.join()
+        if self.listen_thread is not None: self.listen_thread.join()
 
     def set_brightness(self, percent):
         if type(percent) is float:
