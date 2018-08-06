@@ -24,6 +24,9 @@ class MenuManager:
         if self.currentMenu is not None:
             self.currentMenu._on_key_state_changed(key, old_state,new_state)
 
+    def __getstate__(self):
+        return {"currentMenu": self.currentMenu, "menues": self.menues}
+
 class Menu:
     def __init__(self, streamDeck):
         self.streamDeck = streamDeck
