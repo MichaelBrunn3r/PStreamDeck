@@ -50,8 +50,10 @@ class Button:
     T_LONG_PRESS = 400 # Duration a Button has to be pressed down to be considered a long press
     T_DOUBLE_CLICK = 100
 
-    def __init__(self):
+    def __init__(self, icon_path=None):
         self.t_last_pressed = current_milli_time()
+
+        self.icon_path = icon_path
 
         self.is_long_pressing = False
         self.is_pressed = False
@@ -97,3 +99,6 @@ class Button:
 
     def set_during_long_press_callback(self, callback):
         self.during_long_press_callback = callback
+        
+    def __getstate__(self):
+        return {"icon_path": self.icon_path}
