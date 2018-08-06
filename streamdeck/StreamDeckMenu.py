@@ -1,4 +1,5 @@
 from .StreamDeck import StreamDeck
+from ruamel.yaml import YAML
 import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -7,7 +8,7 @@ time_passed = lambda since: current_milli_time() - since
 class MenuManager:
     def __init__(self, streamDeck):
         self.streamDeck = streamDeck
-        self.menues = set()
+        self.menues = dict()
         self.currentMenu = None
         
         for key in range(StreamDeck.KEY_COUNT):
@@ -17,6 +18,8 @@ class MenuManager:
         for key in range(StreamDeck.KEY_COUNT):
             self.streamDeck.remove_key_callback(key, self._on_key_state_changed)
 
+    def add_menu(self, id, menu):
+        self.menues[id] = menu
     def _on_key_state_changed(self, key, old_state, new_state):
         if self.currentMenu is not None:
             self.currentMenu._on_key_state_changed(key, old_state,new_state)
