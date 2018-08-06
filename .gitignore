@@ -1,2 +1,5 @@
 __pycache__
-test/PStreamDeckTestEnv
+PStreamDeckEnv
+test/
+*.pyc
+\.vscode/
