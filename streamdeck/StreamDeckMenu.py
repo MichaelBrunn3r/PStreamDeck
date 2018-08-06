@@ -28,17 +28,16 @@ class MenuManager:
         return {"currentMenu": self.currentMenu, "menues": self.menues}
 
 class Menu:
-    def __init__(self, streamDeck):
-        self.streamDeck = streamDeck
-        self.buttons = [None] * StreamDeck.KEY_COUNT
+    def __init__(self):
+        self.buttons = dict()
 
     def _on_key_state_changed(self, key, old_state, new_state):
         if self.buttons[key] is not None:
             self.buttons[key]._on_key_state_changed(key,old_state,new_state)
 
-    def open(self):
+    def open(self, streamdeck):
         """ Executed when this menu is opened """
-        self.streamDeck.clear()
+        streamdeck.clear()
 
     def set_button(self, key, button):
         if not StreamDeck.is_valid_key(key): raise IndexError("Invalid key index {}.".format(key))
