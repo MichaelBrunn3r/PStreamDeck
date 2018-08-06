@@ -43,6 +43,9 @@ class Menu:
         if not StreamDeck.is_valid_key(key): raise IndexError("Invalid key index {}.".format(key))
         self.buttons[int(key)] = button
 
+    def __getstate__(self):
+        return {"buttons": self.buttons}
+
 class Button:
     T_LONG_PRESS = 400 # Duration a Button has to be pressed down to be considered a long press
     T_DOUBLE_CLICK = 100
