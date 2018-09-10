@@ -10,22 +10,32 @@ class MenuManager:
         self.streamDeck = streamDeck
         self.menues = dict()
         self.currentMenu = None
-        
+
         for key in range(StreamDeck.KEY_COUNT):
             self.streamDeck.add_key_callback(key, self._on_key_state_changed)
 
     def __del__(self):
-        for key in range(StreamDeck.KEY_COUNT):
-            self.streamDeck.remove_key_callback(key, self._on_key_state_changed)
+        if self.streamDeck is not None:
+            for key in range(StreamDeck.KEY_COUNT):
+                self.streamDeck.remove_key_callback(key, self._on_key_state_changed)
+
+    def __setstate__(self, state):
+        self.streamDeck = None
+        self.__dict__.update(state)
+
+    def __getstate__(self):
+        return {"currentMenu": self.currentMenu, "menues": self.menues}
+
+    def __eq__(self, other):
+        if isinstance(other, MenuManager):
+            return other.__getstate__() == self.__getstate__()
+        else: return False
 
     def add_menu(self, id, menu):
         self.menues[id] = menu
     def _on_key_state_changed(self, key, old_state, new_state):
         if self.currentMenu is not None:
             self.currentMenu._on_key_state_changed(key, old_state,new_state)
-
-    def __getstate__(self):
-        return {"currentMenu": self.currentMenu, "menues": self.menues}
 
 class Menu:
     def __init__(self):
@@ -45,6 +55,11 @@ class Menu:
 
     def __getstate__(self):
         return {"buttons": self.buttons}
+
+    def __eq__(self, other):
+        if isinstance(other, Menu):
+            return other.__getstate__() == self.__getstate__()
+        else: return False
 
 class Button:
     T_LONG_PRESS = 400 # Duration a Button has to be pressed down to be considered a long press
@@ -99,6 +114,11 @@ class Button:
 
     def set_during_long_press_callback(self, callback):
         self.during_long_press_callback = callback
-        
+
     def __getstate__(self):
         return {"icon_path": self.icon_path}
+
+    def __eq__(self, other):
+        if isinstance(other, Button):
+            return other.__getstate__() == self.__getstate__()
+        else: return False
