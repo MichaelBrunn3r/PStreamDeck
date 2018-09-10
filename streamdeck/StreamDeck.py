@@ -51,7 +51,7 @@ class StreamDeck:
         self.hid_device = hid.device()
         self.last_key_states = [False] * self.KEY_COUNT
 
-        self.key_callbacks = [set() for i in range(self.KEY_COUNT)]
+        self.key_callbacks = [[] for i in range(self.KEY_COUNT)]
 
         self.listen_thread = None
         self.listen_thread_running = False
@@ -65,11 +65,11 @@ class StreamDeck:
 
     def add_key_callback(self, key, callback):
         if not self.is_valid_key(key): raise IndexError("Invalid key index {}.".format(key))
-        self.key_callbacks[int(key)].add(callback)
+        self.key_callbacks[int(key)].append(callback)
 
     def remove_key_callback(self, key, callback):
         if not self.is_valid_key(key): raise IndexError("Invalid key index {}.".format(key))
-        self.key_callbacks[int(key)].discard(callback)
+        self.key_callbacks[int(key)].remove(callback)
 
     def open(self):
         """
